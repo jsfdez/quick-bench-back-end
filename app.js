@@ -84,16 +84,17 @@ function treat(request) {
     if (request.code.length > MAX_CODE_LENGTH) {
         return Promise.reject('\u001b[0m\u001b[0;1;31mError: Unauthorized code length.\u001b[0m\u001b[1m');
     }
+    request.code = makeCode(request.code);
     let name = makeName(request);
     var dir = WRITE_PATH + '/' + name.substr(0, 2);
     var fileName = dir + '/' + name;
-    return Promise.resolve(write(fileName +'.cpp' , makeCode(request.code))).then(() => execute(fileName, request));
+    return Promise.resolve(write(fileName +'.cpp' , request.code)).then(() => execute(fileName, request));
 }
 
 function makeResult(done) {
     let values = JSON.parse(done.res);
     let result = { context: values.context };
-    let noopTime = values.benchmarks[values.benchmarks.length - 1];
+    let noopTime = values.benchmarks[values.benchmarks.length - 1].cpu_time;
     result.benchmarks = values.benchmarks.map(obj => {
         return {
             name: obj.name,
