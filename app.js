@@ -94,7 +94,12 @@ function makeResult(done) {
     let values = JSON.parse(done.res);
     let result = { context: values.context };
     let noopTime = values.benchmarks[values.benchmarks.length - 1];
-    result.benchmarks = values.benchmarks.map(obj => { name: obj.name, cpu_time: obj.cpu_time / noopTime });
+    result.benchmarks = values.benchmarks.map(obj => {
+        return {
+            name: obj.name,
+            cpu_time: obj.cpu_time / noopTime
+        }
+    });
     return { result: result, message: done.stdout, id: done.id }
 }
 
