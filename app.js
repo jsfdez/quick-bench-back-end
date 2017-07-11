@@ -16,6 +16,7 @@ const WRITE_PATH = '/data';
 const PREFIX_CODE_1 = `#include <benchmark/benchmark_api.h>
 `;
 const SUFFIX_CODE_1 = `
+const PORT = 3000;
 
 static void Noop(benchmark::State& state) {
   while (state.KeepRunning());
@@ -200,7 +201,7 @@ app.get('/get/:id', upload.array(), function (req, res) {
         .catch(() => res.json({ message: 'Could not load given id' }));
 });
 
-app.listen(3000, function () {
+app.listen(PORT, function () {
     console.log('Listening to commands');
 });
 
